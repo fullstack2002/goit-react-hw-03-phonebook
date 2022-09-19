@@ -1,15 +1,18 @@
 import { Component } from "react";
 import { nanoid } from "nanoid";
+import { PhoneForm, PhoneField, PhoneTitle, PhoneInput, PhoneButton } from './ContactForm.styled';
 
 class ContactForm extends Component {
   state = {
     name: "",
     number: "",
   }
+
   getInput = (e) => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   }
+  
   handleSubmit = (e) => {
     e.preventDefault();
     const newContact = {
@@ -21,10 +24,10 @@ class ContactForm extends Component {
   }
   render() {
     return (
-      <form>
-        <label>
-          <span></span>
-          <input
+      <PhoneForm onSubmit={this.handleSubmit}>
+        <PhoneField>
+          <PhoneTitle>Name</PhoneTitle>
+          <PhoneInput
             type="text"
             name="name"
             onChange={this.getInput}
@@ -32,10 +35,10 @@ class ContactForm extends Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             value={this.state.name}
             required/>
-        </label>
-        <label>
-          <span></span>
-          <input
+        </PhoneField>
+        <PhoneField>
+          <PhoneTitle>Number</PhoneTitle>
+          <PhoneInput
             type="tel"
             name="number"
             onChange={this.getInput}
@@ -43,9 +46,9 @@ class ContactForm extends Component {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             value={this.state.number}
             required/>
-        </label>
-        <button type="submit">Add contact</button>
-      </form>
+        </PhoneField>
+        <PhoneButton type="submit">Add contact</PhoneButton>
+      </PhoneForm>
     )
   }
 }

@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
+import { FilterTitle, FilterInput } from "./Filter.styled";
 
 const Filter = ({handleFilter}) => (
   <>
-    <p>Find contacts by Name</p>
-    <input
+    <FilterTitle>Find contacts by Name</FilterTitle>
+    <FilterInput
       type="text"
       onChange={handleFilter}
     />

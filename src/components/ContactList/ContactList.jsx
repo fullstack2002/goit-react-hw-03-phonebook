@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { ContactListItem, ContactListButton } from './ContactList.styled';
+
 const ContactList = ({ contacts, seek, handleDelete }) => {
   return (
     <ul>
@@ -7,9 +9,9 @@ const ContactList = ({ contacts, seek, handleDelete }) => {
           return c.name.toLowerCase().indexOf(seek.toLowerCase()) > -1
         })
       .map(contact => (
-          <li  key={contact.id}><span>{contact.name}: {contact.number}</span>
-            <button  type="button" onClick={() => handleDelete(contact.id)}>Delete</button>
-          </li>
+          <ContactListItem  key={contact.id}><span>{contact.name}: {contact.number}</span>
+            <ContactListButton type="button" onClick={() => handleDelete(contact.id)}>Delete</ContactListButton>
+          </ContactListItem>
       ))}
     </ul>
   )
