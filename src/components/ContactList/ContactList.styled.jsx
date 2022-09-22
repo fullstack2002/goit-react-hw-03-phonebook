@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 export const ContactListButton = styled.button`
-  margin-left: 10px;
 	background-color: #77bbd4;
 	border: 1px solid gray;
 	border-radius: 2px;
@@ -13,4 +12,5 @@ export const ContactListButton = styled.button`
 export const ContactListItem = styled.li`
   font-size: 16px;
 	line-height: 32px;
+  list-style: none;
 `;

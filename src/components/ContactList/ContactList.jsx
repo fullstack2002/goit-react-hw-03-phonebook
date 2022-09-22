@@ -1,21 +1,26 @@
 import PropTypes from "prop-types";
 import { ContactListItem, ContactListButton } from './ContactList.styled';
 
-const ContactList = ({ contacts, seek, handleDelete }) => {
+const ContactList = ({ contacts, ItemDelete }) => {
   return (
     <ul>
-      {contacts
-        .filter((c) => {
-          return c.name.toLowerCase().indexOf(seek.toLowerCase()) > -1
-        })
-      .map(contact => (
-          <ContactListItem  key={contact.id}><span>{contact.name}: {contact.number}</span>
-            <ContactListButton type="button" onClick={() => handleDelete(contact.id)}>Delete</ContactListButton>
-          </ContactListItem>
+      {contacts.map(({ id, name, number }) => (
+        <ContactListItem key={id}>
+          <p>Name: {name}</p>
+          <p>Number: {number}</p>
+          <ContactListButton
+            type="button"
+            onClick={() => {
+            ItemDelete(id);
+            }}
+          >
+            Delete contact
+          </ContactListButton>
+        </ContactListItem>
       ))}
     </ul>
-  )
-}
+  );
+};
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
@@ -23,10 +28,9 @@ ContactList.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
-  seek: PropTypes.string,
-  handleDelete: PropTypes.func.isRequired,
-}
+    })
+  ),
+  ItemDelete: PropTypes.func.isRequired,
+};
 
 export default ContactList;

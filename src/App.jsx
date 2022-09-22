@@ -3,6 +3,7 @@ import ContactList from './components/ContactList/ContactList';
 import Filter from './components/Filter/Filter';
 import { Container } from './App.styled';
 import React, { Component } from "react";
+import { nanoid } from "nanoid";
 
 class App extends Component {
   state = {
@@ -14,33 +15,60 @@ class App extends Component {
     ],
     filter: '',
   };
-  addContact = ({ newContact }) => {
-		if (this.state.contacts.find((item) => item.name === newContact.name)) {
-			alert(`${newContact.name} is already in contacts!`);
-			return;
-		}
-		this.setState((prev) => ({ contacts: [...prev.contacts, newContact] }));
+  addContact = ({ name, number }) => {
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+    const { contacts } = this.state;
+    contacts.find(
+      contact => newContact.name.toLowerCase() === contact.name.toLowerCase()
+    )
+      ? alert(`${newContact.name} is already in contacts.`)
+      : this.setState(({ contacts }) => ({
+        contacts: [newContact, ...contacts],
+      }));
+    
   };
-  handleFilter = (e) => {
-		this.setState({ filter: e.target.value });
-	};
-	handleDelete = (id) => {
-		this.setState((prev) => ({
-			contacts: prev.contacts.filter((el) => el.id !== id),
+  handleDelete = id => {
+		this.setState((prevState) => ({
+			contacts: prevState.contacts.filter(contact => contact.id !== id),
 		}));
   };
+  handleFilter = event => {
+    this.setState({
+      filter: event.currentTarget.value,
+    });
+  };
+
+  filterContactsOnChange = () => {
+    const { contacts, filter } = this.state;
+    const capitalFilter = filter.toUpperCase();
+    return contacts.filter(contact =>
+      contact.name.toUpperCase().includes(capitalFilter)
+    );
+  };
+  sortContactList = () => {
+    return this.filterContactsOnChange().sort(
+      (firstContactName, secondContactName) =>
+        firstContactName.name.localeCompare(secondContactName.name)
+    );
+  };
   render() {
+    const filteredList = this.sortContactList();
+
     return (
       <Container>
-        <div>
         <h1>Phonebook</h1>
-        <ContactForm addContact={this.addContact}></ContactForm>
+        <ContactForm onSubmit={this.addContact}></ContactForm>
         <h2>Contacts</h2>
-        <Filter handleFilter={this.handleFilter}></Filter>
-        <ContactList contacts={this.state.contacts}
-					seek={this.state.filter}
-					handleDelete={this.handleDelete}></ContactList>
-      </div>
+        <Filter
+              value={this.state.filter}
+              onChange={this.handleFilter}
+            />
+        <ContactList contacts={filteredList}
+					ItemDelete={this.handleDelete}></ContactList>
       </Container>
     )
   }

@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { nanoid } from "nanoid";
+import PropTypes from "prop-types";
 import { PhoneForm, PhoneField, PhoneTitle, PhoneInput, PhoneButton } from './ContactForm.styled';
 
 class ContactForm extends Component {
@@ -8,37 +9,43 @@ class ContactForm extends Component {
     number: "",
   }
 
-  getInput = (e) => {
-    const { name, value } = e.target;
+  inputNameId = nanoid();
+  inputTelId = nanoid();
+
+  getInput = event => {
+    const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
-  }
+  };
   
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const newContact = {
-      ...this.state,
-      id: nanoid(),
-    }
-    this.props.addContact({ newContact });
-    this.setState({name: "", number: ""});
-  }
+  handleOnSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmit(this.state);
+    this.reset();
+  };
+  reset = () => {
+    this.setState({ name: '', number: '' });
+  };
+
   render() {
     return (
-      <PhoneForm onSubmit={this.handleSubmit}>
+      <PhoneForm onSubmit={this.handleOnSubmit}>
         <PhoneField>
-          <PhoneTitle>Name</PhoneTitle>
+          <PhoneTitle htmlFor={this.inputNameId}>Name</PhoneTitle>
           <PhoneInput
+            id={this.inputNameId}
             type="text"
             name="name"
             onChange={this.getInput}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             value={this.state.name}
-            required/>
+            required
+            />
         </PhoneField>
         <PhoneField>
           <PhoneTitle>Number</PhoneTitle>
           <PhoneInput
+            id={this.inputTelId}
             type="tel"
             name="number"
             onChange={this.getInput}
@@ -52,4 +59,9 @@ class ContactForm extends Component {
     )
   }
 }
+
+ContactForm.propTypes = {
+  handleOnSubmit: PropTypes.func,
+};
+
 export default ContactForm;

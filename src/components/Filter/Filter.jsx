@@ -1,16 +1,24 @@
 import PropTypes from "prop-types";
 import { FilterTitle, FilterInput } from "./Filter.styled";
 
-const Filter = ({handleFilter}) => (
-  <>
-    <FilterTitle>Find contacts by Name</FilterTitle>
-    <FilterInput
-      type="text"
-      onChange={handleFilter}
-    />
-  </>
-)
-Filter.propTypes = {
-  handleFilter: PropTypes.func.isRequired,
-}
+const Filter = ({ value, onChange }) => {
+  return (
+    <div>
+      <FilterTitle>Find contacts by name</FilterTitle>
+      <FilterInput
+        type="text"
+        name="filter"
+        value={value}
+        onChange={onChange}
+        title="Search field"
+        required
+      />
+    </div>
+  );
+};
+
+  Filter.propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
 export default Filter;
