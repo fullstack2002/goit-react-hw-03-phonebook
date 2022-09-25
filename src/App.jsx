@@ -15,6 +15,7 @@ class App extends Component {
     ],
     filter: '',
   };
+  
   addContact = ({ name, number }) => {
     const newContact = {
       id: nanoid(),
