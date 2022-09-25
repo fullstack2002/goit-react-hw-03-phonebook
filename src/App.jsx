@@ -5,31 +5,25 @@ import { Container } from './App.styled';
 import React, { Component } from "react";
 import { nanoid } from "nanoid";
 
-const KEY = "contacts";
-
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
   componentDidMount() {
-    const storageList = localStorage.getItem(KEY);
-    if (storageList !== null) {
-      this.setState({
-        contacts: JSON.parse(storageList),
-      });
+    const contactsInStorage = localStorage.getItem('contacts');
+    if (contactsInStorage) {
+            const parsedContacts = JSON.parse(contactsInStorage);
+            this.setState(
+                { contacts: parsedContacts }
+            )
+        }
     }
-  }
 
-  componentDidUpdate(_, prevState) {
-     if (prevState.contacts.length !== this.state.contacts.length) {
-      localStorage.setItem(KEY, JSON.stringify(this.state.contacts));
+  componentDidUpdate(prevProps, prevState) {
+     if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
 
