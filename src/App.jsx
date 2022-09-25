@@ -5,6 +5,8 @@ import { Container } from './App.styled';
 import React, { Component } from "react";
 import { nanoid } from "nanoid";
 
+const KEY = "contacts";
+
 class App extends Component {
   state = {
     contacts: [
@@ -15,7 +17,22 @@ class App extends Component {
     ],
     filter: '',
   };
-  
+
+  componentDidMount() {
+    const storageList = localStorage.getItem(KEY);
+    if (storageList !== null) {
+      this.setState({
+        contacts: JSON.parse(storageList),
+      });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+     if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem(KEY, JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = ({ name, number }) => {
     const newContact = {
       id: nanoid(),
